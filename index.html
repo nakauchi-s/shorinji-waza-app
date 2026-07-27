@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport"
+              content="width=device-width, initial-scale=1.0">
+        <title>少林寺拳法 技抽出アプリ</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <h1>少林寺拳法<br>技抽出アプリ</h1>
+
+        <!-- ======================
+            条件設定
+        ======================= -->
+        <details 
+        id="conditionArea"
+        class="condition"
+        open>
+            <summary>抽出条件</summary>
+            <!-- 音声 -->
+            <div class="control">
+                <label>
+                    🔊 音声読み上げ
+                </label>
+
+                <select id="voiceSelect">
+                    <option value="on">ON</option>
+                    <option value="off">OFF</option>
+                </select>
+            </div>
+
+            <!-- 拳系 -->
+            <div class="control">
+                <label>拳系（複数選択）</label>
+                <div id="punchArea" class="punch-grid"></div>
+            </div>
+
+            <!-- 階級 -->
+            <div class="control">
+                <label>階級範囲</label>
+                <div class="rank-area">
+                    <select id="rankStart"></select>
+                    <span>～</span>
+                    <select id="rankEnd"></select>
+                </div>
+            </div>
+
+            <!-- 分類 -->
+            <div class="control">
+                <label>分類</label>
+                <select id="categorySelect"></select>
+            </div>
+        </details>
+
+        <!-- ======================
+            操作ボタン
+        ======================= -->
+        <section class="buttons">
+            <button id="extractBtn">技を抽出</button>
+            <button id="nextBtn">次の技</button>
+            <button id="resetBtn">リセット</button>
+            <button id="clearBtn">条件クリア</button>
+        </section>
+
+        <!-- ======================
+            結果表示
+        ======================= -->
+        <section class="card">
+            <div id="countArea">
+                残り件数：
+                <span id="remainingCount">0</span>
+            </div>
+            <h2 id="wazaName">技名</h2>
+            <p>読み：<span id="yomi"></span></p>
+            <p>拳系：<span id="punch"></span></p>
+            <p>階級：<span id="rank"></span></p>
+            <p>分類：<span id="category"></span></p>
+            <p>構え：<span id="kamae"></span></p>
+            <hr>
+            <p>攻者構え：<span id="attacker"></span></p>
+            <p>攻撃方法：<span id="attack"></span></p>
+            <p>守者構え：<span id="defender"></span></p>
+            <p>守法：<span id="method"></span></p>
+            <p>教範頁：<span id="page"></span></p>
+        </section>
+
+        <!-- ======================
+            補助ボタン
+        ======================= -->
+        <section class="sub-buttons">
+            <button id="readBtn">🔊 再読み上げ</button>
+            <button id="pdfBtn">📄 教範PDF</button>
+        </section>
+        <script src="app.js"></script>
+    </body>
+</html>
