@@ -5,6 +5,7 @@ let wazaList = [];
 let punchMaster = [];
 let rankMaster = [];
 let categoryMaster = [];
+let referenceList = [];
 let remainingList = [];
 let historyList = [];
 let currentWaza = null;
@@ -57,11 +58,25 @@ async function loadData(){
             r => r.json()
         );
 
+        referenceList =
+        await fetch(
+            "./data/reference.json"
+        )
+        .then(
+            r => r.json()
+        );
+
         dataLoaded = true;
 
         console.log(
             "データ読込完了",
-            wazaList.length
+            {
+                技:wazaList.length,
+                拳系:punchMaster.length,
+                階級:rankMaster.length,
+                分類:categoryMaster.length,
+                参考資料:referenceList.length
+            }
         );
 
         createPunchArea();
@@ -279,7 +294,6 @@ function setDefaultCondition(){
 // =====================================
 // 抽出処理
 // =====================================
-
 function extractWaza(){
 
     console.log(
@@ -627,13 +641,14 @@ function displayWaza(){
     )
     .textContent =
     w.教範頁;
+
+    displayReference();
 }
 
 // =====================================
 // リセット
 // 抽出履歴・表示内容を完全クリア
 // =====================================
-
 function resetWaza(){
 
     // 抽出管理を完全初期化
@@ -680,6 +695,12 @@ function resetWaza(){
     )
     .textContent =
     "0";
+    // 参考資料クリア
+    document
+    .getElementById(
+        "referenceArea"
+    )
+    .innerHTML = "";
 }
 
 // =====================================
@@ -725,20 +746,6 @@ function readWaza(){
     utter.rate=0.85;
     speechSynthesis.speak(
         utter
-    );
-}
-
-// =====================================
-// PDF表示
-// =====================================
-function openPDF(){
-    if(!currentWaza){
-        return;
-    }
-    window.open(
-        "./pdf/"
-        +
-        currentWaza["PDFファイル"]
     );
 }
 
@@ -799,14 +806,94 @@ document.addEventListener(
         "click",
         reread
         );
-
-        document
-        .getElementById(
-        "pdfBtn"
-        )
-        .addEventListener(
-        "click",
-        openPDF
-        );
     }
 );
+
+// =====================================
+// 参考資料表示
+// =====================================
+function displayReference(){
+
+    const area =
+    document.getElementById(
+        "referenceArea"
+    );
+    if(!area){
+        return;
+    }
+    area.innerHTML="";
+    if(!currentWaza){
+        return;
+    }
+
+    const list =
+    referenceList.filter(
+        r =>
+        Number(r.技ID)
+        ===
+        Number(currentWaza.ID)
+    );
+    console.log(
+        "現在技ID",
+        currentWaza.ID
+    );
+
+    console.log(
+        "参考資料検索結果",
+        list
+    );
+
+    if(list.length===0){
+        return;
+    }
+
+    list.sort(
+        (a,b)=>
+        Number(a.表示順)
+        -
+        Number(b.表示順)
+    );
+
+    list.forEach(
+        r=>{
+            const button =
+            document.createElement(
+                "button"
+            );
+
+            button.textContent =
+            (
+                r.種類 === "PDF"
+                ? "📄 "
+                : "🎬 "
+            ) + r.タイトル;
+            button.onclick =
+            ()=>{
+                if(r.種類==="PDF"){
+                    window.open(
+                        "./pdf/" + r.参照先,
+                        "_blank"
+                    );
+                }
+                else if(r.種類 === "動画"){
+
+                    window.open(
+                        r.参照先,
+                        "_blank"
+                    );
+
+                }
+                else
+                {
+                    window.open(
+                        r.参照先,
+                        "_blank"
+                    );
+                }
+            };
+            area.appendChild(
+                button
+            );
+        }
+    );
+}

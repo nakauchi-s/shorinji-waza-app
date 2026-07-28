@@ -219,3 +219,28 @@ hr {
 .condition[open] summary::after {
     content:" ▲";
 }
+
+/* ===================================
+   参考資料ボタン
+=================================== */
+#referenceArea {
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-top:15px;
+}
+.reference-button {
+    height:42px;
+    padding:8px 15px;
+    font-size:14px;
+    font-weight:bold;
+}
+@media(max-width:480px){
+    #referenceArea {
+        flex-direction:column;
+    }
+
+    .reference-button {
+        width:100%;
+    }
+}
